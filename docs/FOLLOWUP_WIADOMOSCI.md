@@ -1,6 +1,12 @@
 # Follow-up i wiadomości — do wysyłki
 
-Uzupełnij `[LINK_DEMO]`, `[EMAIL]`, `[IMIĘ]`.
+Uzupełnij `[EMAIL]`, `[IMIĘ]`.  
+Linki demo (GitHub Pages):
+
+- Landing: https://KacperBanko.github.io/ecommerce-faq-chatbot/
+- Widget: https://KacperBanko.github.io/ecommerce-faq-chatbot/shop-demo.html
+
+W wiadomościach możesz użyć: `https://KacperBanko.github.io/ecommerce-faq-chatbot/shop-demo.html` zamiast `[LINK_DEMO]`.
 
 ---
 
@@ -15,7 +21,7 @@ widzę, że prowadzisz sklep [nazwa/branża]. Czy klienci często pytają o dost
 Wdrażam asystenta na stronę sklepu: odpowiada na takie pytania 24/7 i przekazuje trudniejsze sprawy (np. reklamację zamówienia) do Waszego zespołu.
 Nie musicie zakładać żadnych skomplikowanych kont — wklejacie krótki kod, ja zajmuję się resztą.
 
-Demo (2 min): [LINK_DEMO]
+Demo (2 min): https://KacperBanko.github.io/ecommerce-faq-chatbot/shop-demo.html
 Pakiety od 999 PLN, wdrożenie zwykle 5–7 dni.
 
 Jak OK — 15 min rozmowy, pokażę jak to mogłoby wyglądać u Was.
@@ -31,7 +37,7 @@ Pozdrawiam,
 Cześć [Imię],
 
 krótko wracam w temacie asystenta na stronę sklepu.
-Gdybyście chcieli zobaczyć działające demo: [LINK_DEMO]
+Gdybyście chcieli zobaczyć działające demo: https://KacperBanko.github.io/ecommerce-faq-chatbot/shop-demo.html
 
 Bez zobowiązań — wystarczy 15 minut, żeby ocenić, czy to ma sens u Was.
 
@@ -48,7 +54,7 @@ domykam temat: asystent FAQ + dostępność produktów + przekazanie spraw do ob
 Cennik: Starter 999 PLN / Pro 1999 PLN (+ opcjonalnie opieka 300 PLN/mies.).
 Faktura dla firmy: przez platformę (np. Useme) — dostajecie normalną fakturę.
 
-Demo: [LINK_DEMO]
+Demo: https://KacperBanko.github.io/ecommerce-faq-chatbot/shop-demo.html
 Chętnie umówię krótką rozmowę w tym tygodniu.
 
 [Imię] | [EMAIL]

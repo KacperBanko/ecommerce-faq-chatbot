@@ -2,7 +2,9 @@
 
 **Dla:** sklepów e-commerce (Shoper, WooCommerce, IdoSell i podobne)  
 **Cel:** mniej powtarzalnych pytań do obsługi, szybsze odpowiedzi dla klientów  
-**Demo:** [po Netlify wstaw: `https://TWOJA-STRONA.netlify.app/` oraz `https://TWOJA-STRONA.netlify.app/shop-demo.html`]
+**Demo:**  
+- Landing: https://KacperBanko.github.io/ecommerce-faq-chatbot/  
+- Widget na sklepie: https://KacperBanko.github.io/ecommerce-faq-chatbot/shop-demo.html
 
 ---
 

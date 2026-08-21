@@ -1,17 +1,16 @@
 # GitHub Pages — instrukcja
 
-## Adres strony (po włączeniu Pages)
+**Login:** `KacperBanko`  
+**Repo:** https://github.com/KacperBanko/ecommerce-faq-chatbot
 
-```
-https://TWOJ-LOGIN.github.io/ecommerce-faq-chatbot/
-```
+## Adresy (HTTPS)
 
 | Strona | URL |
 |--------|-----|
-| Landing | `https://TWOJ-LOGIN.github.io/ecommerce-faq-chatbot/` |
-| Demo sklepu + widget | `.../shop-demo.html` |
-| Sam czat | `.../chat.html` |
-| Widget JS | `.../widget.js` |
+| Landing | https://KacperBanko.github.io/ecommerce-faq-chatbot/ |
+| Demo sklepu + widget | https://KacperBanko.github.io/ecommerce-faq-chatbot/shop-demo.html |
+| Sam czat | https://KacperBanko.github.io/ecommerce-faq-chatbot/chat.html |
+| Widget JS | https://KacperBanko.github.io/ecommerce-faq-chatbot/widget.js |
 
 ## Snippet dla klienta
 
@@ -24,25 +23,21 @@ https://TWOJ-LOGIN.github.io/ecommerce-faq-chatbot/
     welcome: "Cześć! W czym mogę pomóc?"
   };
 </script>
-<script src="https://TWOJ-LOGIN.github.io/ecommerce-faq-chatbot/widget.js" defer></script>
+<script src="https://KacperBanko.github.io/ecommerce-faq-chatbot/widget.js" defer></script>
 ```
 
-Podmień `TWOJ-LOGIN` na swój login GitHub.
+## Konfiguracja Pages (jeśli jeszcze nie działa)
 
-## Konfiguracja w GitHub (UI)
+1. https://github.com/KacperBanko/ecommerce-faq-chatbot/settings/pages
+2. Source: Deploy from a branch → `main` / `/` → Save
+3. Poczekaj 1–2 minuty
 
-1. Repo → **Settings** → **Pages**
-2. **Source:** Deploy from a branch
-3. **Branch:** `main` → folder `/` (root) → **Save**
-4. Poczekaj 1–2 minuty → pojawia się zielony link HTTPS
-
-## Aktualizacje
+## Aktualizacje lokalne + push
 
 ```powershell
 cd C:\Users\Asus\Projects\ecommerce-faq-chatbot
+git remote set-url origin https://github.com/KacperBanko/ecommerce-faq-chatbot.git
 git add .
 git commit -m "Update site"
 git push
 ```
-
-Po ~1 minucie zmiany są na Pages.

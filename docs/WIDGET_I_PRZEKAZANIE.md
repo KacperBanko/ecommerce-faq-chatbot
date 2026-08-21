@@ -62,7 +62,7 @@ Gdy `widget.js` i `widget.css` będą na hostingu HTTPS (Netlify / Twoja domena)
     welcome: "Cześć! W czym mogę pomóc?"
   };
 </script>
-<script src="https://TWOJA-DOMENA/widget.js" defer></script>
+<script src="https://KacperBanko.github.io/ecommerce-faq-chatbot/widget.js" defer></script>
 ```
 
 `widget.js` sam dociąga `widget.css` z tego samego folderu.
