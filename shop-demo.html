@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo sklepu — test widgetu chatbota</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a1f24;
+      --soft: #5a6570;
+      --line: #e2ddd4;
+      --bg: #f7f3ea;
+      --card: #fffdf8;
+      --accent: #0f6b5c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "DM Sans", system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+    }
+    .logo {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 1.6rem;
+      margin: 0;
+    }
+    .nav { display: flex; gap: 1rem; font-size: 0.9rem; color: var(--soft); }
+    .hero {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 1.5rem;
+      display: grid;
+      gap: 1.5rem;
+    }
+    @media (min-width: 800px) {
+      .hero { grid-template-columns: 1.1fr 0.9fr; align-items: center; }
+    }
+    .hero h1 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      margin: 0 0 0.75rem;
+      line-height: 1.1;
+    }
+    .hero p { margin: 0; color: var(--soft); max-width: 40ch; }
+    .price { margin-top: 1rem; font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+    .btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.7rem 1.1rem;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.25rem;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background-image:
+        linear-gradient(160deg, #d7e8e3 0%, transparent 55%),
+        linear-gradient(180deg, #fffdf8 40%, #f3efe6 100%);
+    }
+    .product-card span {
+      font-size: 0.8rem;
+      color: var(--soft);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .product-card strong { font-size: 1.15rem; }
+    .note {
+      max-width: 960px;
+      margin: 0 auto 3rem;
+      padding: 1rem 1.25rem;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.5);
+      color: var(--soft);
+      font-size: 0.9rem;
+    }
+    .note code {
+      background: #efeae0;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <p class="logo">Nordthread</p>
+    <div class="nav">
+      <span>Odzież</span>
+      <span>Dostawa</span>
+      <span>Kontakt</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>Bluza bawełniana czarna M</h1>
+      <p>
+        To lokalna strona testowa sklepu. W prawym dolnym rogu jest widget chatbota —
+        kliknij zieloną ikonę i przetestuj FAQ, produkt oraz reklamację.
+      </p>
+      <p class="price">89,99 PLN</p>
+      <a class="btn" href="#">Dodaj do koszyka</a>
+    </div>
+    <div class="product-card">
+      <span>PROD-001</span>
+      <strong>Dostępna · 12 szt. w magazynie</strong>
+    </div>
+  </section>
+
+  <div class="note">
+    <strong>Jak testować:</strong>
+    1) uruchom <code>py -3 -m http.server 5173</code> w folderze projektu ·
+    2) otwórz <code>http://localhost:5173/shop-demo.html</code> ·
+    3) kliknij widget i wyślij pytania testowe.
+  </div>
+
+  <!-- ===== WIDGET CHATBOTA — to wklejasz też na stronie klienta ===== -->
+  <script>
+    window.NORDTHREAD_CHAT = {
+      webhookUrl: "https://hook.eu2.make.com/13dfib3i8ufb42tf59imnk9b1e8826j9",
+      shopName: "Nordthread",
+      primaryColor: "#0f6b5c",
+      position: "right",
+      welcome:
+        "Cześć! Jestem asystentem sklepu Nordthread. Zapytaj o dostawę, zwroty albo dostępność produktów.",
+    };
+  </script>
+  <script src="widget.js" defer></script>
+  <!-- =============================================================== -->
+</body>
+</html>

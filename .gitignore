@@ -1,0 +1,10 @@
+.DS_Store
+Thumbs.db
+node_modules/
+.env
+.env.*
+docs/_gh_check.txt
+docs/_sheet_dump.txt
+docs/_read_xlsx.py
+docs/_deploy_log.txt
+*.xlsx

@@ -1,0 +1,16 @@
+# Statyczny hosting — landing + widget + demo sklepu
+[build]
+  publish = "."
+  command = "echo no-build"
+
+[[headers]]
+  for = "/widget.js"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=300"
+
+[[headers]]
+  for = "/widget.css"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=300"

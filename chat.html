@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nordthread — Demo chatbota</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <main class="shell">
+    <p class="back-link"><a href="index.html">← Powrót na stronę ofertową</a></p>
+
+    <header class="brand">
+      <p class="brand__mark">Nordthread</p>
+      <h1 class="brand__title">Demo chatbota</h1>
+      <p class="brand__sub">Pytania o dostawę, zwroty i produkty — odpowiedzi od razu.</p>
+    </header>
+
+    <section class="chat" aria-label="Czat z asystentem">
+      <div class="chat__header">
+        <div class="chat__avatar" aria-hidden="true">N</div>
+        <div class="chat__header-text">
+          <p class="chat__name">Asystent Nordthread</p>
+          <p class="chat__status" id="statusLine">
+            <span class="chat__status-dot" aria-hidden="true"></span>
+            <span id="statusText">Online · odpowiadam w kilka sekund</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="chat__messages" id="messages" role="log" aria-live="polite"></div>
+
+      <form class="chat__form" id="chatForm">
+        <div class="chat__email-wrap">
+          <label class="sr-only" for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="chat__email"
+            placeholder="Twój email (gdy sprawa wymaga kontaktu)"
+            autocomplete="email"
+          />
+        </div>
+        <div class="chat__compose">
+          <label class="sr-only" for="message">Twoje pytanie</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="1"
+            required
+            placeholder="Zapytaj o dostawę, zwrot albo produkt…"
+          ></textarea>
+          <button type="submit" id="sendBtn" aria-label="Wyślij">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+
+      <div class="chat__hints" id="hints">
+        <p class="chat__hints-label">Przykładowe pytania</p>
+        <div class="chat__hints-row">
+          <button type="button" data-q="Ile kosztuje dostawa?">Koszt dostawy</button>
+          <button type="button" data-q="Czy macie PROD-001? Jaki jest stan i cena?">Dostępność produktu</button>
+          <button type="button" data-q="Chcę złożyć reklamację na zamówienie nr 12345">Reklamacja zamówienia</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="footnote">Demo sklepu Nordthread · asystent 24/7</p>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

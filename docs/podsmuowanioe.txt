@@ -1,0 +1,534 @@
+Poniżej masz techniczne, uporządkowane podsumowanie całego projektu, tak żeby druga osoba mogła zrozumieć:
+
+co zrobiliśmy,
+jak to działa,
+jak to odtworzyć na swoim komputerze,
+na co uważać.
+Cel projektu
+Zbudowaliśmy MVP chatbota e-commerce, który:
+
+odpowiada na najczęstsze pytania klientów,
+sprawdza dostępność i cenę produktów,
+rozpoznaje sytuacje, których nie powinien obsługiwać samodzielnie,
+przekazuje trudniejsze sprawy do człowieka przez mechanizm eskalacji.
+To nie był chatbot „ogólny”, tylko konkretny asystent obsługi sklepu internetowego.
+
+Zakres funkcjonalny MVP
+Bot obsługuje 3 główne typy zapytań:
+
+FAQ
+np. dostawa, zwroty, płatności, faktury, reklamacje
+PRODUCT
+np. „czy macie PROD-001?”, „jaki jest stan i cena?”
+ESKALACJA
+np. pytania o konkretne zamówienie, reklamację z numerem zamówienia, sprawy wymagające człowieka
+Bot działa na zasadzie:
+
+jeśli zna odpowiedź z bazy wiedzy → odpowiada,
+jeśli pytanie dotyczy konkretnego zamówienia albo nie ma danych → eskaluje do BOK.
+Stos technologiczny
+Backend / automatyzacja
+Make.com
+Google Sheets jako baza wiedzy
+Google Gemini API jako model LLM
+Webhook jako punkt wejścia
+Frontend
+prosty HTML/CSS/JS chat
+lokalnie uruchamiany w przeglądarce
+połączenie z Make przez fetch() do webhooka
+Architektura systemu
+Całość została podzielona na 2 warstwy:
+
+1. Backend w Make
+Odpowiada za:
+
+odbiór wiadomości,
+pobranie danych z Google Sheets,
+przygotowanie kontekstu dla AI,
+wysłanie zapytania do Gemini,
+sparsowanie odpowiedzi,
+routing odpowiedzi,
+ewentualne zapisanie eskalacji.
+2. Frontend chat
+Odpowiada za:
+
+pokazanie użytkownikowi prostego interfejsu rozmowy,
+wysłanie pytania do webhooka,
+wyświetlenie odpowiedzi bota,
+pokazanie gotowych przycisków testowych.
+Struktura danych w Google Sheets
+Stworzyliśmy 3 arkusze.
+
+Arkusz 1: FAQ
+Zawiera bazę odpowiedzi na najczęstsze pytania.
+
+Kolumny:
+
+ID Pytania
+Kategoria
+Pytanie (PL)
+Odpowiedź (PL)
+Przykłady tematów:
+
+status zamówienia,
+anulowanie zamówienia,
+metody płatności,
+dostawa,
+wysyłka zagraniczna,
+zwroty,
+reklamacje,
+konto klienta,
+faktura VAT.
+Arkusz 2: Produkty
+Zawiera dane produktowe.
+
+Kolumny:
+
+SKU
+Nazwa
+Stan
+Status
+Cena
+Kategoria
+Przykład:
+
+PROD-001
+Bluza bawełniana czarna M
+12
+dostępny
+89,99
+Arkusz 3: Eskalacje
+Zawiera zgłoszenia, których bot nie rozwiązał sam.
+
+Kolumny:
+
+Data
+Pytanie_klienta
+Powód_eskalacji
+Email_klienta
+Status
+Jak działa backend w Make
+Scenariusz został zbudowany jako pipeline.
+
+Krok 1: Webhook
+Webhook odbiera dane z frontendu lub PowerShella.
+
+Payload wygląda tak:
+
+{
+  "message": "Treść pytania klienta",
+  "session_id": "sess_test_1",
+  "email": "test@example.com"
+}
+Krok 2: Pobranie FAQ
+Make pobiera wiersze z arkusza FAQ.
+
+Krok 3: Pobranie produktów
+Make pobiera wiersze z arkusza Produkty.
+
+Krok 4: Text Aggregator dla FAQ
+Wiersze FAQ są łączone do jednego bloku tekstowego, np.:
+
+Q: Ile kosztuje dostawa? | A: Koszty dostawy zaczynają się od...
+Q: Czy mogę zwrócić produkt? | A: Masz 14 dni na zwrot...
+Krok 5: Text Aggregator dla produktów
+Wiersze produktów są łączone do jednego bloku tekstowego, np.:
+
+SKU: PROD-001 | Nazwa: Bluza bawełniana czarna M | Stan: 12 | Status: dostępny | Cena: 89,99 PLN
+Krok 6: HTTP request do Gemini
+Make wysyła do Gemini:
+
+wiadomość klienta,
+zagregowane FAQ,
+zagregowaną listę produktów,
+instrukcję systemową.
+Gemini ma zwrócić czysty JSON.
+
+Krok 7: Parse JSON
+Odpowiedź Gemini jest parsowana do osobnych pól:
+
+intent
+confidence
+answer
+product_sku
+escalate
+escalate_reason
+Krok 8: Router
+Router sprawdza escalate.
+
+jeśli false → odpowiedź wraca do klienta
+jeśli true → zapis do arkusza Eskalacje i zwrot odpowiedzi eskalacyjnej
+Krok 9: Webhook response
+Make zwraca JSON do frontendu lub PowerShella.
+
+Prompt / logika AI
+Model Gemini dostaje jasne instrukcje:
+
+odpowiada po polsku,
+nie wymyśla danych spoza bazy,
+ma klasyfikować intencję,
+ma używać wyłącznie FAQ i produktów,
+jeśli pytanie dotyczy konkretnego zamówienia lub nie ma danych → ma eskalować.
+Przykładowe pola odpowiedzi:
+
+{
+  "intent": "PRODUCT",
+  "confidence": 0.93,
+  "answer": "Tak, Bluza bawełniana czarna M jest dostępna. Mamy 12 sztuk w magazynie, a jej cena to 89,99 PLN.",
+  "product_sku": "PROD-001",
+  "escalate": false,
+  "escalate_reason": ""
+}
+albo:
+
+{
+  "intent": "ESKALACJA",
+  "confidence": 0.0,
+  "answer": "Aby złożyć reklamację dotyczącą konkretnego zamówienia, prosimy o kontakt z Biurem Obsługi Klienta.",
+  "escalate": true,
+  "escalate_reason": "Pytanie dotyczy konkretnego zamówienia."
+}
+Najważniejsze problemy, które naprawialiśmy
+To jest bardzo ważna część, bo druga osoba prawie na pewno wpadnie w podobne pułapki.
+
+1. Błąd Accepted zamiast odpowiedzi
+Objaw:
+
+webhook dostawał request,
+ale klient dostawał 202 Accepted,
+bez prawidłowego JSON-a odpowiedzi.
+Przyczyna:
+
+Router nie przepuszczał żadnej ścieżki,
+bo escalate było źle sparsowane lub źle porównywane.
+Naprawa:
+
+poprawiliśmy Parse JSON,
+poprawiliśmy filtry Routera,
+dodaliśmy fallback.
+2. Zły Parse JSON
+Przyczyna:
+
+moduł był źle ustawiony,
+próbował odnosić się sam do siebie,
+używał złej struktury danych.
+Naprawa:
+
+Parse JSON dostał prawidłowy input z odpowiedzi HTTP,
+skonfigurowaliśmy właściwe pola odpowiedzi AI.
+3. Błędne mapowania w aggregatorach
+Przyczyna:
+
+agregatory używały złych pól,
+albo statycznego tekstu,
+albo złego source module.
+Naprawa:
+
+FAQ agregowaliśmy z Search Rows [FAQ],
+Produkty z Search Rows [Produkty],
+wstawiliśmy prawidłowe kolumny arkuszy.
+4. Problem z JSON i znakami specjalnymi
+Przyczyna:
+
+tekst z Sheets zawierał nowe linie i znaki, które psuły JSON w requestach do Gemini.
+Naprawa:
+
+użyliśmy escapeJSON() w Make.
+5. Frontend i CORS
+Objaw:
+
+PowerShell działał,
+przeglądarka blokowała requesty.
+Naprawa:
+
+w Webhook response trzeba było dodać:
+Access-Control-Allow-Origin: *
+Content-Type: application/json
+Testy, które wykonaliśmy
+Przetestowaliśmy 3 kluczowe scenariusze.
+
+1. FAQ
+Pytanie:
+
+„Ile kosztuje dostawa?”
+Wynik:
+
+bot odpowiedział z sekcji FAQ,
+intent: FAQ
+2. Produkt
+Pytanie:
+
+„Czy macie PROD-001? Jaki jest stan i cena?”
+Wynik:
+
+bot odpowiedział poprawnie:
+produkt istnieje,
+stan: 12,
+cena: 89,99 PLN
+intent: PRODUCT
+3. Eskalacja
+Pytanie:
+
+„Chcę złożyć reklamację na zamówienie nr 12345”
+Wynik:
+
+bot nie próbował zgadywać,
+zwrócił odpowiedź eskalacyjną,
+intent: ESKALACJA
+To potwierdziło, że działają 3 główne ścieżki logiki.
+
+Frontend, który zbudowaliśmy
+Powstał prosty frontend demonstracyjny.
+
+Pliki
+index.html
+styles.css
+app.js
+config.js
+README.md
+start-demo.bat
+Funkcje frontendu
+prosty interfejs chatu,
+pole e-mail,
+pole wiadomości,
+wysyłanie przez fetch() do webhooka,
+wyświetlanie odpowiedzi,
+3 gotowe przyciski testowe:
+Dostawa
+PROD-001
+Reklamacja
+Jak działa frontend
+użytkownik wpisuje pytanie,
+app.js wysyła request do webhooka,
+Make zwraca JSON,
+frontend pokazuje odpowiedź jako wiadomość bota.
+Jak uruchamialiśmy
+Ponieważ npx nie było dostępne, użyliśmy lokalnego serwera przez Python:
+
+py -3 -m http.server 5173
+a potem otwieraliśmy:
+
+http://localhost:5173
+
+Obecny status projektu
+Na ten moment projekt ma status:
+
+Gotowe
+działający backend w Make,
+działające połączenie z Gemini,
+baza FAQ,
+baza produktów,
+mechanizm eskalacji,
+prosty frontend demo,
+nagrane demo,
+pierwszy outreach do firm.
+Czyli praktycznie:
+To nie jest już „pomysł”, tylko działające MVP, które można:
+
+pokazać klientowi,
+rozwijać,
+sprzedawać jako usługę wdrożeniową.
+Jak druga osoba może to odtworzyć od zera
+Najprostsza ścieżka:
+
+Etap 1: Dane
+Stworzyć plik Google Sheets
+Dodać 3 arkusze:
+FAQ
+Produkty
+Eskalacje
+Uzupełnić przykładowe dane
+Etap 2: Make
+Stworzyć webhook
+Dodać Search Rows dla FAQ
+Dodać Search Rows dla produktów
+Dodać dwa Text Aggregator
+Dodać HTTP request do Gemini
+Dodać Parse JSON
+Dodać Router
+Dodać:
+success response
+escalation response
+fallback response
+Dodać zapis do arkusza Eskalacje
+Etap 3: Frontend
+Stworzyć prosty HTML/CSS/JS
+W config.js wkleić URL webhooka
+Upewnić się, że w Make jest ustawiony CORS
+Odpalić stronę lokalnie
+Etap 4: Testy
+FAQ
+Produkt
+Eskalacja
+Sprawdzenie arkusza Eskalacje
+Czego ta druga osoba musi pilnować
+Najważniejsze rzeczy:
+
+Parse JSON musi parsować odpowiedź AI, nie request
+Router musi pracować na prawdziwym boolean, nie na tekście
+Text Aggregator musi mieć dobre pola i dobre source module
+escapeJSON() jest ważne przy treściach z Sheets
+CORS jest obowiązkowy, jeśli frontend działa w przeglądarce
+AI nie powinno odpowiadać na pytania o konkretne zamówienie bez dostępu do systemu zamówień
+Co dalej można rozwijać
+Jeśli ktoś chce iść dalej, kolejne kroki są logicznie takie:
+
+Poziom 2
+lepszy widget frontendu,
+branding sklepu,
+lepsze formatowanie odpowiedzi,
+obsługa wielu sesji.
+Poziom 3
+podłączenie prawdziwego API sklepu:
+WooCommerce
+Shoper
+Shopify
+IdoSell
+Poziom 4
+panel admina,
+statystyki pytań,
+historia rozmów,
+alerty mailowe do BOK.
+Poziom 5
+wersja produktowa / SaaS,
+wielu klientów,
+osobne konfiguracje sklepów,
+billing.
+Jak to możesz opowiedzieć drugiej osobie w 30 sekund
+Możesz powiedzieć tak:
+
+Zbudowaliśmy MVP chatbota e-commerce w Make.com. Dane FAQ i produktów trzymamy w Google Sheets, a Gemini odpowiada na pytania na podstawie tych danych. Jeśli bot zna odpowiedź, odsyła ją do użytkownika, a jeśli pytanie dotyczy konkretnego zamówienia albo nie ma danych, tworzy eskalację do BOK. Do tego zrobiliśmy prosty frontend chat w HTML/CSS/JS, który wysyła pytania do webhooka Make i pokazuje odpowiedzi. Całość działa end-to-end i została przetestowana na FAQ, produktach i reklamacjach.
+
+Jeśli chcesz, mogę teraz przygotować Ci jeszcze:
+
+wersję ultra-techniczną dla developera,
+wersję prostszą dla klienta biznesowego,
+albo checklistę krok po kroku „jak odtworzyć to na nowym komputerze”.
+
+
+
+Chatbot e-commerce — podsumowanie dla klienta biznesowego
+Co to jest?
+To asystent obsługi klienta na stronę sklepu internetowego.
+Odpowiada klientom na najczęstsze pytania, sprawdza dostępność produktów i w razie potrzeby przekazuje sprawę do człowieka.
+
+Jakie problemy rozwiązuje?
+Sklepy często tracą czas i klientów na powtarzalnych pytaniach:
+
+„Ile kosztuje dostawa?”
+„Jak zrobić zwrot?”
+„Czy ten produkt jest dostępny?”
+„Chcę złożyć reklamację na zamówienie…”
+Bez chatbota te pytania lądują w mailu, na Facebooku albo w telefonie.
+Z chatbotem:
+
+klient dostaje odpowiedź od razu,
+BOK mniej się obciąża,
+sklep wygląda bardziej profesjonalnie,
+trudniejsze sprawy i tak trafiają do człowieka.
+Co bot już potrafi?
+1. Odpowiada na FAQ
+Np.:
+
+dostawa,
+zwroty,
+płatności,
+faktury,
+konto klienta.
+2. Sprawdza produkty
+Np.:
+
+czy produkt jest dostępny,
+jaki jest stan magazynowy,
+jaka jest cena.
+Przykład:
+
+„Tak, Bluza bawełniana czarna M jest dostępna. Mamy 12 sztuk w magazynie, a jej cena to 89,99 PLN.”
+
+3. Przekazuje trudne sprawy do BOK
+Np. gdy klient pisze:
+
+„Chcę złożyć reklamację na zamówienie nr 12345”
+
+Bot nie zgaduje.
+Przekazuje sprawę do obsługi i zapisuje zgłoszenie.
+
+Jak to działa w praktyce?
+Klient pisze pytanie w oknie chatu.
+System sprawdza bazę wiedzy sklepu.
+Bot od razu odpowiada albo przekazuje sprawę do BOK.
+Trudniejsze zgłoszenia trafiają do listy eskalacji.
+Dane sklepu są w prostym arkuszu Google Sheets, więc treści można zmieniać bez programisty.
+
+Co już jest gotowe?
+działający bot,
+baza FAQ,
+baza produktów,
+mechanizm eskalacji do człowieka,
+prosty interfejs chatu,
+nagrane demo,
+pierwsze testy przechodzą poprawnie.
+To nie jest już tylko pomysł.
+To działające MVP, które można pokazać i wdrożyć.
+
+Co klient dostaje przy wdrożeniu?
+chatbota dopasowanego do swojego sklepu,
+odpowiedzi na najczęstsze pytania klientów,
+sprawdzanie dostępności produktów,
+automatyczne przekazywanie trudnych spraw do BOK,
+możliwość edycji treści w Google Sheets,
+wdrożenie w kilka dni.
+Dla kogo to ma sens?
+Najbardziej dla:
+
+małych i średnich sklepów internetowych,
+sklepów, które dostają dużo powtarzalnych pytań,
+firm, które nie chcą od razu budować dużego i drogiego systemu,
+właścicieli, którzy chcą szybko odciążyć obsługę klienta.
+Czego bot jeszcze nie robi?
+Na tym etapie bot:
+
+nie prowadzi całego sklepu samodzielnie,
+nie zastępuje w 100% człowieka,
+nie ma jeszcze pełnej integracji z systemem zamówień sklepu.
+I to jest celowe.
+Na start robimy coś prostego, szybkiego i użytecznego.
+
+Co można rozwijać później?
+Po pierwszym wdrożeniu można dodać:
+
+podłączenie do prawdziwego sklepu (np. Shoper, WooCommerce),
+lepszy wygląd widgetu na stronie,
+powiadomienia mailowe dla BOK,
+historię rozmów,
+statystyki najczęstszych pytań,
+wersję bardziej zaawansowaną pod większą skalę.
+Prosta wartość biznesowa
+Bez bota	Z botem
+Klient czeka na odpowiedź
+Klient dostaje odpowiedź od razu
+BOK odpowiada na te same pytania
+BOK zajmuje się trudniejszymi sprawami
+FAQ często jest słabo widoczne
+FAQ działa jak rozmowa
+Brak info o stanie produktu
+Bot podaje dostępność i cenę
+Trudne sprawy giną w skrzynce
+Eskalacje są zapisywane
+Oferta startowa
+Pakiet Starter
+
+chatbot FAQ + stany magazynowe
+eskalacja do BOK
+wdrożenie i konfiguracja
+Czas: 5–7 dni
+Cena orientacyjna: 999–1499 PLN
+Opcja: utrzymanie miesięczne ok. 300 PLN
+
+Jak to powiedzieć klientowi w 20 sekund?
+Zrobiłem chatbota dla sklepów internetowych. Odpowiada klientom na pytania o dostawę, zwroty i produkty, a trudniejsze sprawy przekazuje do człowieka. Działa już w wersji demo i można go wdrożyć w kilka dni.
+
+Jeśli chcesz, w kolejnym kroku mogę przygotować z tego:
+
+wersję do maila sprzedażowego,
+albo 1-stronicową ofertę PDF/tekstową gotową do wysłania klientowi.

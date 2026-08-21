@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Chatbot dla sklepu internetowego: odpowiedzi na pytania klientów, stany magazynowe, przekazanie trudnych spraw do obsługi. Wdrożenie w 5–7 dni." />
+  <title>Chatbot dla sklepu internetowego — Nordthread</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="landing.css" />
+</head>
+<body class="landing-page">
+  <div class="bg" aria-hidden="true"></div>
+
+  <header class="lp-nav">
+    <a class="lp-nav__logo" href="#">Nordthread</a>
+    <nav class="lp-nav__links">
+      <a href="#funkcje">Co robi</a>
+      <a href="#jak-dziala">Jak działa</a>
+      <a href="#cennik">Cennik</a>
+      <a href="#demo">Demo</a>
+    </nav>
+    <a class="lp-btn lp-btn--small" id="ctaNav" href="#kontakt">Porozmawiajmy</a>
+  </header>
+
+  <main>
+    <section class="lp-hero">
+      <div class="lp-hero__copy">
+        <p class="lp-eyebrow">Chatbot dla sklepu internetowego</p>
+        <h1>Mniej tych samych pytań.<br />Więcej sprzedanych koszyków.</h1>
+        <p class="lp-lead">
+          Asystent na stronie odpowiada na pytania o dostawę, zwroty i produkty.
+          Gdy sprawa wymaga człowieka — przekazuje ją do Twojego zespołu.
+        </p>
+        <div class="lp-hero__actions">
+          <a class="lp-btn" href="#demo">Zobacz demo</a>
+          <a class="lp-btn lp-btn--ghost" id="ctaHero" href="#kontakt">Zapytaj o wdrożenie</a>
+        </div>
+        <ul class="lp-hero__stats">
+          <li><strong>24/7</strong> odpowiedzi dla klientów</li>
+          <li><strong>5–7 dni</strong> wdrożenie u Ciebie</li>
+          <li><strong>Bez kodu</strong> edycja treści w arkuszu</li>
+        </ul>
+      </div>
+      <div class="lp-hero__card">
+        <p class="lp-hero__card-title">Od pierwszego dnia</p>
+        <ul>
+          <li>Odpowiada na dostawę, zwroty i płatności</li>
+          <li>Podaje stan i cenę produktu</li>
+          <li>Przekazuje reklamacje i zamówienia do obsługi</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="lp-section" id="funkcje">
+      <p class="lp-eyebrow">Co robi</p>
+      <h2>Trzy rzeczy, które odciążają sklep</h2>
+      <div class="lp-grid lp-grid--3">
+        <article class="lp-card">
+          <div class="lp-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              <path d="M8 10h8M8 14h5"/>
+            </svg>
+          </div>
+          <h3>Odpowiedzi na pytania</h3>
+          <p>Klient pyta o dostawę albo zwrot — dostaje konkretną odpowiedź, bez czekania na maila.</p>
+        </article>
+        <article class="lp-card">
+          <div class="lp-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <path d="M3.3 7.7 12 12.5l8.7-4.8M12 22.5V12.5"/>
+            </svg>
+          </div>
+          <h3>Stany i ceny</h3>
+          <p>„Czy ten produkt jest dostępny?” — bot sprawdza magazyn i podaje aktualną cenę.</p>
+        </article>
+        <article class="lp-card">
+          <div class="lp-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3>Przekazanie do człowieka</h3>
+          <p>Reklamacja, konkretne zamówienie — sprawa trafia do Twojego zespołu z zapisem w arkuszu.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="lp-section lp-section--muted" id="jak-dziala">
+      <p class="lp-eyebrow">Jak to działa</p>
+      <h2>Prosto po obu stronach</h2>
+      <ol class="lp-steps">
+        <li>
+          <span class="lp-steps__num">1</span>
+          <div>
+            <strong>Klient pisze na stronie</strong>
+            <span>w oknie czatu, tak jak do obsługi sklepu</span>
+          </div>
+        </li>
+        <li>
+          <span class="lp-steps__num">2</span>
+          <div>
+            <strong>Bot odpowiada z Twoich danych</strong>
+            <span>z listy pytań i produktów, które sam uzupełniasz</span>
+          </div>
+        </li>
+        <li>
+          <span class="lp-steps__num">3</span>
+          <div>
+            <strong>Trudna sprawa idzie do zespołu</strong>
+            <span>dostajesz zgłoszenie — możesz też dostać maila</span>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="lp-section" id="cennik">
+      <p class="lp-eyebrow">Cennik</p>
+      <h2>Pakiety wdrożenia</h2>
+      <div class="lp-grid lp-grid--3 lp-pricing">
+        <article class="lp-price">
+          <h3>Starter</h3>
+          <p class="lp-price__amount">999 <span>PLN</span></p>
+          <p class="lp-price__note">jednorazowo</p>
+          <ul>
+            <li>Chatbot na stronie sklepu</li>
+            <li>FAQ + stany magazynowe</li>
+            <li>Przekazywanie spraw do obsługi</li>
+            <li>Edycja treści w arkuszu</li>
+            <li>Wdrożenie w 5–7 dni</li>
+          </ul>
+          <a class="lp-btn lp-btn--ghost lp-btn--block" id="ctaStarter" href="#kontakt">Wybieram Starter</a>
+        </article>
+        <article class="lp-price lp-price--featured">
+          <p class="lp-price__badge">Najczęściej wybierany</p>
+          <h3>Pro</h3>
+          <p class="lp-price__amount">1 999 <span>PLN</span></p>
+          <p class="lp-price__note">jednorazowo</p>
+          <ul>
+            <li>Wszystko ze Starter</li>
+            <li>Strona ofertowa sklepu</li>
+            <li>Kolory i logo pod markę</li>
+            <li>Czat osadzony na stronie</li>
+          </ul>
+          <a class="lp-btn lp-btn--block" id="ctaPro" href="#kontakt">Wybieram Pro</a>
+        </article>
+        <article class="lp-price">
+          <h3>Opieka</h3>
+          <p class="lp-price__amount">300 <span>PLN/mies.</span></p>
+          <p class="lp-price__note">opcjonalnie</p>
+          <ul>
+            <li>Aktualizacja pytań i odpowiedzi</li>
+            <li>Sprawdzanie, czy bot działa</li>
+            <li>Drobne poprawki</li>
+            <li>Kontakt mailowy</li>
+          </ul>
+          <a class="lp-btn lp-btn--ghost lp-btn--block" href="#kontakt">Zapytaj o szczegóły</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="lp-section lp-section--demo" id="demo">
+      <div class="lp-demo__header">
+        <div>
+          <p class="lp-eyebrow">Demo</p>
+          <h2>Sprawdź, jak to wygląda u klienta</h2>
+          <p class="lp-lead">To działający przykład — te same funkcje wdrożymy w Twoim sklepie.</p>
+        </div>
+        <a class="lp-btn lp-btn--ghost" href="chat.html">Otwórz w osobnym oknie</a>
+      </div>
+      <div class="lp-demo__chat">
+        <section class="chat chat--embedded" aria-label="Czat demo">
+          <div class="chat__header">
+            <div class="chat__avatar" aria-hidden="true">N</div>
+            <div class="chat__header-text">
+              <p class="chat__name">Asystent Nordthread</p>
+              <p class="chat__status" id="statusLine">
+                <span class="chat__status-dot" aria-hidden="true"></span>
+                <span id="statusText">Online · odpowiadam w kilka sekund</span>
+              </p>
+            </div>
+          </div>
+          <div class="chat__messages" id="messages" role="log" aria-live="polite"></div>
+          <form class="chat__form" id="chatForm">
+            <div class="chat__email-wrap">
+              <label class="sr-only" for="email">Email</label>
+              <input type="email" id="email" name="email" class="chat__email" placeholder="Twój email (gdy sprawa wymaga kontaktu)" autocomplete="email" />
+            </div>
+            <div class="chat__compose">
+              <label class="sr-only" for="message">Twoje pytanie</label>
+              <textarea id="message" name="message" rows="1" required placeholder="Zapytaj o dostawę, zwrot albo produkt…"></textarea>
+              <button type="submit" id="sendBtn" aria-label="Wyślij">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </form>
+          <div class="chat__hints" id="hints">
+            <p class="chat__hints-label">Przykładowe pytania</p>
+            <div class="chat__hints-row">
+              <button type="button" data-q="Ile kosztuje dostawa?">Koszt dostawy</button>
+              <button type="button" data-q="Czy macie PROD-001? Jaki jest stan i cena?">Dostępność produktu</button>
+              <button type="button" data-q="Chcę złożyć reklamację na zamówienie nr 12345">Reklamacja</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="lp-section lp-cta" id="kontakt">
+      <h2>Chcesz coś takiego w swoim sklepie?</h2>
+      <p class="lp-lead">Napisz — umówimy krótką rozmowę i pokażę, jak to mogłoby wyglądać u Ciebie.</p>
+      <a class="lp-btn lp-btn--large" id="ctaContact" href="#">Napisz: kontakt@nordthread.pl</a>
+      <p class="lp-cta__note">Bez zobowiązań · wdrożenie zwykle w tydzień</p>
+    </section>
+  </main>
+
+  <footer class="lp-footer">
+    <p>Nordthread · asystent sklepu internetowego</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="landing.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
